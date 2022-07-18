@@ -164,3 +164,4 @@ D:\Licenta\Backend\Backend\bin\Debug\net5.0\System.Web.Http.dll
 D:\Licenta\Backend\Backend\bin\Debug\net5.0\Microsoft.OData.Core.dll
 D:\Licenta\Backend\Backend\bin\Debug\net5.0\Microsoft.OData.Edm.dll
 D:\Licenta\Backend\Backend\bin\Debug\net5.0\Microsoft.Spatial.dll
+D:\Licenta\Backend\Backend\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

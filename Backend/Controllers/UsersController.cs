@@ -10,6 +10,11 @@ using Backend.Models;
 using Microsoft.AspNet.OData;
 using Backend.DTOs;
 using Backend.Helpers;
+using Microsoft.AspNetCore.Cors;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace Backend.Controllers
 {
@@ -23,6 +28,62 @@ namespace Backend.Controllers
             _context = context;
         }
         [EnableQuery]
+        [EnableCors]
+        [HttpPost("api/users/login")]
+        public async Task<IActionResult> Login([FromBody] LoginDTO loginDto)
+        {
+            try
+            {
+
+                var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == loginDto.Username);
+                if (user == null)
+                {
+                    return NotFound(null);
+                }
+                PasswordEncrypter pe = new PasswordEncrypter();
+                if (pe.DecodeFrom64(user.Password) == loginDto.Password)
+                {
+                    var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("licentakeylmao1234"));
+                    var signingCredetials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
+                    var userClaims = new List<Claim>();
+                    var claim = new Claim("id", user.Id.ToString());
+                    var claim1 = new Claim("firstname", user.FirstName);
+                    var claim2 = new Claim("lastname", user.LastName);
+
+
+                    userClaims.Add(claim);
+                    userClaims.Add(claim1);
+                    userClaims.Add(claim2);
+                    var tokenOptions = new JwtSecurityToken(
+                        issuer: "https://localhost:44302",
+                        audience: "https://localhost:4200",
+                        claims: userClaims,
+                        expires: DateTime.Now.AddMinutes(30),
+                        signingCredentials: signingCredetials
+                        );
+                    var tokenString = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
+                    LoginHistory lh = new LoginHistory();
+                    lh.UserId = user.Id;
+                    lh.LoginDate = DateTime.Now;
+                    _context.LoginHistories.Add(lh);
+                    foreach(var p in _context.ProductOrders)
+                    {
+                        _context.Remove(p);
+                    }
+                    await _context.SaveChangesAsync();
+                    TokenDTO dto = new TokenDTO();
+                    dto.Token = tokenString;
+                    return Ok(dto);
+                }
+                else return BadRequest("WrongPassword");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(null);
+            }
+            
+        }
+        [EnableQuery]
         [HttpGet("api/users")]
         public async Task<IActionResult> Get()
         {
@@ -31,7 +92,7 @@ namespace Backend.Controllers
         }
         [EnableQuery]
         [HttpGet("api/users/{id}")]
-        public async Task<IActionResult> Get([FromRoute] Guid id)
+        public async Task<IActionResult> Get([FromRoute] string id)
         {
             if (id == null)
             {
@@ -39,7 +100,7 @@ namespace Backend.Controllers
             }
 
             var user = await _context.Users
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.Id.ToString() == id);
             if (user == null)
             {
                 return NotFound();
@@ -61,6 +122,7 @@ namespace Backend.Controllers
                 user.FirstName = userDTO.FirstName;
                 user.LastName = userDTO.LastName;
                 user.RegistrationDate = DateTime.Now;
+                user.Points = 0;
                 _context.Add(user);
                 await _context.SaveChangesAsync();
             }
@@ -75,7 +137,7 @@ namespace Backend.Controllers
             var user = await _context.Users.FindAsync(id);
             if (user == null)
             {
-                return NotFound();
+                return NotFound("User not found.");
             }
 
             if (ModelState.IsValid)

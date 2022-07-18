@@ -58,6 +58,7 @@ namespace Backend.Controllers
                 product.Name = productDTO.Name;
                 product.Description = productDTO.Description;
                 product.Price = productDTO.Price;
+                product.PointsPrice = productDTO.PointsPrice;
                 _context.Add(product);
                 await _context.SaveChangesAsync();
             }
@@ -82,6 +83,7 @@ namespace Backend.Controllers
                     product.Name = productDTO.Name;
                     product.Description = productDTO.Description;
                     product.Price = productDTO.Price;
+                    product.PointsPrice = productDTO.PointsPrice;
                     _context.Update(product);
                     await _context.SaveChangesAsync();
                 }

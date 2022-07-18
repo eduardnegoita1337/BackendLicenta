@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "DxP1pjc4KEcz9vUhB2BwlMfKlvTqfOH+Qhtdb6nYTIw498ewW1mEYEiLbZS/IE/ygUMdmU5v5WH1zlT9KBWmvw==",
+  "dgSpecHash": "AyxrdPg16qAWUi9uQHabdRoiBFCdxM4QliyOWAXxGA9tkffhGvbD2ljehH+O0q7RtX3Nr4Fo6D6YhDE6YR7ubA==",
   "success": true,
   "projectFilePath": "D:\\Licenta\\Backend\\Backend\\Backend.csproj",
   "expectedPackageFiles": [
@@ -9,6 +9,7 @@
     "C:\\Users\\rbkap\\.nuget\\packages\\microsoft.aspnet.odata\\7.5.14\\microsoft.aspnet.odata.7.5.14.nupkg.sha512",
     "C:\\Users\\rbkap\\.nuget\\packages\\microsoft.aspnet.webapi.client\\5.2.2\\microsoft.aspnet.webapi.client.5.2.2.nupkg.sha512",
     "C:\\Users\\rbkap\\.nuget\\packages\\microsoft.aspnet.webapi.core\\5.2.2\\microsoft.aspnet.webapi.core.5.2.2.nupkg.sha512",
+    "C:\\Users\\rbkap\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\3.1.7\\microsoft.aspnetcore.authentication.jwtbearer.3.1.7.nupkg.sha512",
     "C:\\Users\\rbkap\\.nuget\\packages\\microsoft.aspnetcore.html.abstractions\\2.2.0\\microsoft.aspnetcore.html.abstractions.2.2.0.nupkg.sha512",
     "C:\\Users\\rbkap\\.nuget\\packages\\microsoft.aspnetcore.razor\\2.2.0\\microsoft.aspnetcore.razor.2.2.0.nupkg.sha512",
     "C:\\Users\\rbkap\\.nuget\\packages\\microsoft.aspnetcore.razor.language\\5.0.0\\microsoft.aspnetcore.razor.language.5.0.0.nupkg.sha512",

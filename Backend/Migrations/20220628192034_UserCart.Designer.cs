@@ -4,14 +4,16 @@ using Backend.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Backend.Migrations
 {
     [DbContext(typeof(RestaurantContext))]
-    partial class RestaurantContextModelSnapshot : ModelSnapshot
+    [Migration("20220628192034_UserCart")]
+    partial class UserCart
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,18 +23,11 @@ namespace Backend.Migrations
 
             modelBuilder.Entity("Backend.Models.LoginHistory", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
                     b.Property<DateTime>("LoginDate")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
 
                     b.ToTable("LoginHistories");
                 });
@@ -74,11 +69,11 @@ namespace Backend.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ImagePath")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("OrderId")
+                        .HasColumnType("int");
 
                     b.Property<int>("PointsPrice")
                         .HasColumnType("int");
@@ -87,32 +82,10 @@ namespace Backend.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
 
                     b.ToTable("Products");
-                });
-
-            modelBuilder.Entity("Backend.Models.ProductOrder", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PointsPrice")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ProductOrders");
                 });
 
             modelBuilder.Entity("Backend.Models.ShoppingCart", b =>
@@ -168,6 +141,13 @@ namespace Backend.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("Backend.Models.Product", b =>
+                {
+                    b.HasOne("Backend.Models.Order", null)
+                        .WithMany("Products")
+                        .HasForeignKey("OrderId");
+                });
+
             modelBuilder.Entity("Backend.Models.ShoppingCart", b =>
                 {
                     b.HasOne("Backend.Models.User", "User")
@@ -177,6 +157,11 @@ namespace Backend.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Backend.Models.Order", b =>
+                {
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("Backend.Models.User", b =>
