@@ -24,7 +24,7 @@ namespace Backend.Controllers
         private readonly RestaurantContext _context;
 
         public UsersController(RestaurantContext context)
-        {
+        { 
             _context = context;
         }
         [EnableQuery]
@@ -85,7 +85,7 @@ namespace Backend.Controllers
         }
         [EnableQuery]
         [HttpGet("api/users")]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get( )
         {
             var users = await _context.Users.ToListAsync();
             return Ok(users);

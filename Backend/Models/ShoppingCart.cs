@@ -12,7 +12,6 @@ namespace Backend.Models
         public User User { get; set; }
         [NotMapped]
         public ICollection<Product> Products { get; set; }
-
         public Guid UserId { get; set; }
         public decimal Value { get; set; }
         public int PointsValue { get; set; }
